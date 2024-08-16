@@ -6,8 +6,10 @@ import org.cai.tools.translate.{Decoding, TranslateTools}
 import org.junit.jupiter.api.Test
 import org.neo4j.driver._
 
+import java.util
 import java.util.Base64
 import scala.collection.JavaConverters._
+import scala.collection.convert.ImplicitConversions.`list asScalaBuffer`
 
 /**
  * @author cai584770
@@ -23,29 +25,32 @@ class ReverseAndComplementInNeo {
     val session: Session = driver.session(SessionConfig.forDatabase("neo4j"))
 
     try {
-      for (i <- 37 until 49) {
-        val startTime = System.currentTimeMillis()
-        val cypherQuery =
-          """
-            |MATCH (n:GeSeq)
-            |WHERE id(n) = $nodeId
-            |RETURN n.geseq AS geseqData;
-            |""".stripMargin
-        val parameters: java.util.Map[String, Object] = Map("nodeId" -> i.asInstanceOf[Object]).asJava
+      //      for (i <- 73 until 85) {
+      val i = 76
+      val startTime = System.currentTimeMillis()
+      val cypherQuery =
+        """
+          |MATCH (n:GeSeq)
+          |WHERE id(n) = $nodeId
+          |RETURN n.geseq AS geseqData;
+          |""".stripMargin
 
-        val result = session.run(cypherQuery, parameters)
+      val parameters: java.util.Map[String, Object] = Map("nodeId" -> i.asInstanceOf[Object]).asJava
 
-        while (result.hasNext) {
-          val record = result.next()
-          val base64String = record.get("geseqData").asString()
-          val byteArray: Array[Byte] = Base64.getDecoder.decode(base64String)
-          val r = Complement.complement(byteArray)
-          Decoding.convertFromBinaryArray(r).toString()
-          val endTime = System.currentTimeMillis()
-          println(endTime - startTime)
-        }
+      val result = session.run(cypherQuery, parameters)
 
-      }
+      val integerList: List[Integer] = result.single().get("geseqData").asList((value: org.neo4j.driver.Value) => value.asInt(): Integer).asScala.toList
+      val invertedList: List[Int] = integerList.map(i => ~i)
+
+
+      //      val byteArray: Array[Byte] = integerList.map(_.toByte).toArray
+//
+//      Convert.convertDirect(byteArray)
+
+      val end = System.currentTimeMillis()
+      println(end - startTime)
+
+      //      }
     } finally {
       session.close()
       driver.close()

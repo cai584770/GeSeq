@@ -7,8 +7,11 @@ import org.junit.jupiter.api.Test
 import org.neo4j.driver._
 
 import java.io.File
-import java.util.Base64
+import scala.collection.JavaConverters._
 import scala.collection.immutable
+import org.neo4j.driver.{Session, Values}
+
+import java.util
 
 /**
  * @author cai584770
@@ -26,7 +29,6 @@ class Neo4jArray {
     try {
       val files = new File(DataSet.geSeqFolder)
       val allFiles: immutable.Seq[File] = TestTools.listAllFiles(files)
-      var cypherQuery = ""
       for (elem <- allFiles) {
         val filePath = elem.toString
         val (information, sequence) = FileProcess.getInformationAndSequence(filePath)
@@ -34,13 +36,19 @@ class Neo4jArray {
 
         val bbm: Array[Byte] = GeSeq.fromSequence(normalizeSequence).getbbm
 
-        val base64String = Base64.getEncoder.encodeToString(bbm)
 
         val cypherQuery =
-          s"""
-           CREATE (n:GeSeq {storage:'ab',header: '$information', geseq: '$base64String'});
-         """
-        session.run(cypherQuery)
+          """
+            |CREATE (n:GeSeq
+            |{storage:'lii',
+            |geseq: $par});
+            |""".stripMargin
+
+        val integerList: java.util.List[Integer] = bbm.map(_.toInt).map(Int.box).toList.asJava
+
+        val parameters: util.Map[String, Object] = Map("par" -> integerList.asInstanceOf[Object]).asJava
+
+        val result = session.run(cypherQuery, parameters)
       }
 
     } finally {

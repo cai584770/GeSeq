@@ -31,9 +31,13 @@ class Neo4jString {
         val normalizeSequence = FileNormalize.remove(sequence)
 
         val cypherQuery =
-          s"""
-             CREATE (n:GeSeq {storage:'str',header: '$information', geseq: '$normalizeSequence'});
-           """
+          """
+            |CREATE (n:GeSeq
+            |{storage:'str',
+            |header: '$information',
+            |geseq: $normalizeSequence});
+            |""".stripMargin
+
         session.run(cypherQuery)
       }
 
