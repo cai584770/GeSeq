@@ -21,5 +21,13 @@ object Complement {
     result
   }
 
-
+  def complementString(sequence: String): String = {
+    sequence
+      .replace('A', 'X')
+      .replace('T', 'A')
+      .replace('X', 'T')
+      .replace('G', 'Y')
+      .replace('C', 'G')
+      .replace('Y', 'C')
+  }
 }

@@ -19,7 +19,13 @@ class StringFunctions {
   @UserFunction
   @Description("Process custom data type")
   def complementString(@Name("input") input: String): String = {
-    input.reverse
+    complementString(input)
+  }
+
+  @UserFunction
+  @Description("Process custom data type")
+  def reverseComplementString(@Name("input") input: String): String = {
+    complementString(input).reverse
   }
 
 }
