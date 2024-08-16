@@ -8,6 +8,7 @@ import play.api.libs.json._
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.util.Base64
+
 /**
  * @author cai584770
  * @date 2024/8/13 21:44
@@ -24,18 +25,16 @@ case class GeSeq(
 
   def getbbm = sequence
 
-
-  def toMap: Map[String, Any] = {
+  def toNeo4jMap: Map[String, Any] = {
     Map(
-      "sequence" -> sequence,
-      "lowercase" -> lowercase,
-      "nBase" -> nBase,
-      "otherBASE" -> otherBASE,
+      "sequence" -> Base64.getEncoder.encodeToString(sequence),
+      "lowercase" -> lowercase.map { case (start, length) => Map("start" -> start, "length" -> length) },
+      "nBase" -> nBase.map { case (start, length) => Map("start" -> start, "length" -> length) },
+      "otherBASE" -> otherBASE.map { case (key, value) => Map("key" -> key, "value" -> value) },
       "sequenceLength" -> sequenceLength,
       "nucleotidesLength" -> nucleotidesLength
     )
   }
-
 
   def toByteArray: Array[Byte] = {
     val buffer = ByteBuffer.allocate(calculateTotalSize)
@@ -84,17 +83,6 @@ case class GeSeq(
 
 
 object GeSeq {
-  def convertGeSeqToNeo4jFormat(geSeq: GeSeq): Map[String, Any] = {
-    Map(
-      "sequence" -> Base64.getEncoder.encodeToString(geSeq.sequence),
-      "lowercase" -> geSeq.lowercase.map { case (a, b) => Map("first" -> a, "second" -> b) },
-      "nBase" -> geSeq.nBase.map { case (a, b) => Map("first" -> a, "second" -> b) },
-      "otherBASE" -> geSeq.otherBASE.map { case (a, b) => Map("key" -> a, "value" -> b) },
-      "sequenceLength" -> geSeq.sequenceLength,
-      "nucleotidesLength" -> geSeq.nucleotidesLength
-    )
-  }
-
 
   implicit val byteArrayWrites: Writes[Array[Byte]] = Writes { array =>
     JsArray(array.map(b => JsNumber(b.toInt)))
@@ -125,7 +113,7 @@ object GeSeq {
     val (noNSequence, nCaseList) = BBM.removeAndRecordN(noLowerCaseSequence)
     val (agctSequence, otherCaseList) = BBM.removeAndRecord(noNSequence)
 
-    val sequence2bit: Array[Byte] = BBM.convertToBinaryArray(agctSequence, bioSequenceType)
+    val sequence2bit: Array[Byte] = BBM.convertToBinaryArray(agctSequence)
 
     new GeSeq(sequence2bit, lowerCaseList, nCaseList, otherCaseList, data.length, agctSequence.length)
   }
@@ -138,6 +126,18 @@ object GeSeq {
     buffer.get(bbm)
 
     bbm
+  }
+
+
+  def convertGeSeqToNeo4jFormat(geSeq: GeSeq): Map[String, Any] = {
+    Map(
+      "sequence" -> Base64.getEncoder.encodeToString(geSeq.sequence),
+      "lowercase" -> geSeq.lowercase.map { case (a, b) => Map("first" -> a, "second" -> b) },
+      "nBase" -> geSeq.nBase.map { case (a, b) => Map("first" -> a, "second" -> b) },
+      "otherBASE" -> geSeq.otherBASE.map { case (a, b) => Map("key" -> a, "value" -> b) },
+      "sequenceLength" -> geSeq.sequenceLength,
+      "nucleotidesLength" -> geSeq.nucleotidesLength
+    )
   }
 
   def fromByteArray(bytes: Array[Byte]): GeSeq = {
@@ -176,5 +176,4 @@ object GeSeq {
 
     GeSeq(bbm, lowercase, nBase, otherBASE, sequenceLength, nucleotidesLength)
   }
-
 }

@@ -13,25 +13,25 @@ import org.neo4j.procedure.{Description, Name, UserFunction}
  */
 class GeSeqFunctions {
 
-  @UserFunction
-  @Description("Process custom data type")
-  def fromFASTQ(@Name("input") input: String): Map[String, Any] = {
-    val (information, sequence) = FileProcess.getInformationAndSequence(input)
-    val normalizeSequence = FileNormalize.remove(sequence)
+//  @UserFunction
+//  @Description("Process custom data type")
+//  def fromFASTQ(@Name("input") input: String): Map[String, Any] = {
+//    val (information, sequence) = FileProcess.getInformationAndSequence(input)
+//    val normalizeSequence = FileNormalize.remove(sequence)
+//
+//    val map = GeSeq.fromSequence(normalizeSequence).toMap
+//    map
+//  }
 
-    val map = GeSeq.fromSequence(normalizeSequence).toMap
-    map
-  }
-
-  @UserFunction
-  @Description("Process custom data type")
-  def fromFASTA(@Name("input") input: String): Map[String, Any] = {
-    val (information, sequence) = FileProcess.getInformationAndSequence(input)
-    val normalizeSequence = FileNormalize.remove(sequence)
-
-    GeSeq.fromSequence(normalizeSequence).toMap
-  }
-
+//  @UserFunction
+//  @Description("Process custom data type")
+//  def fromFASTA(@Name("input") input: String): Map[String, Any] = {
+//    val (information, sequence) = FileProcess.getInformationAndSequence(input)
+//    val normalizeSequence = FileNormalize.remove(sequence)
+//
+//    GeSeq.fromSequence(normalizeSequence).toMap
+//  }
+//
 
   @UserFunction
   @Description("Process custom data type")

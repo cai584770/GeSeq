@@ -24,7 +24,7 @@ object BBM {
     val agctSequenceLength = agctSequence.length
     val lengthList: List[(Int, Int)] = List((sequenceLength, agctSequenceLength))
 
-    val sequence2bit: Array[Byte] = convertToBinaryArray(agctSequence, bioSequenceType)
+    val sequence2bit: Array[Byte] = convertToBinaryArray(agctSequence)
 
     val supplementaryInformation = Map(
       "LowerCasePosition" -> lowerCaseList,
@@ -36,12 +36,9 @@ object BBM {
     (supplementaryInformation, sequence2bit)
   }
 
-  def convertToBinaryArray(s: String, bioSequenceType: BioSequenceType): Array[Byte] = {
-    val conversionMap = bioSequenceType match {
-      case DNA => Map('A' -> "00", 'G' -> "10", 'C' -> "01", 'T' -> "11")
-      case RNA => Map('A' -> "00", 'G' -> "10", 'C' -> "01", 'U' -> "11")
-      case _ => throw new BioSequenceTypeException
-    }
+  def convertToBinaryArray(s: String): Array[Byte] = {
+    val conversionMap = Map('A' -> "00", 'G' -> "10", 'C' -> "01", 'T' -> "11")
+
 
     val binaryStringBuilder = new StringBuilder()
 

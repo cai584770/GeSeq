@@ -1,13 +1,17 @@
 package neo4j
 
+import org.cai.bbm.BBM
 import org.cai.file.{FileNormalize, FileProcess}
-import org.cai.geseq.GeSeq
+import org.cai.geseq.BioSequenceEnum.DNA
+import org.cai.geseq.{BioSequenceEnum, GeSeq}
 import org.junit.jupiter.api.Test
 import org.neo4j.driver._
 
 import java.io.File
+import java.util
 import scala.collection.immutable
-
+import scala.collection.JavaConverters._
+import java.util.{HashMap, Map => JMap}
 /**
  * @author cai584770
  * @date 2024/8/15 15:44
@@ -78,11 +82,17 @@ class Neo4jTest {
         val (information, sequence) = FileProcess.getInformationAndSequence(filePath)
         val normalizeSequence = FileNormalize.remove(sequence)
 
-        val geSeqMap: Map[String, Any] = GeSeq.fromSequence(normalizeSequence).toMap
+        val mapN: Map[String, Any] = GeSeq.fromSequence(normalizeSequence).toNeo4jMap
+
+        val parameters: util.HashMap[String, Object] = new util.HashMap[String,Object]()
+
+        mapN.foreach { case (key, value) => parameters.put(key, value.asInstanceOf[Object])
+        }
+
 
         val cypherQuery =
           s"""
-             CREATE (n:GeSeq {header: '$information', geseq: $geSeqMap});
+             CREATE (n:GeSeq {header: '$information', geseq: $parameters});
            """
         session.run(cypherQuery)
       }
@@ -106,81 +116,7 @@ class Neo4jTest {
     }
   }
 
-  @Test
-  def importNeo4j(): Unit = {
-    val driver: Driver = GraphDatabase.driver(uri, AuthTokens.none())
 
-    val session: Session = driver.session(SessionConfig.forDatabase("neo4j"))
-
-    try {
-      val files = new File(DataSet.geSeqFolder)
-      val allFiles: immutable.Seq[File] = listAllFiles(files)
-      var cypherQuery = ""
-      for (elem <- allFiles) {
-        val filePath = elem.toString
-        val (information, sequence) = FileProcess.getInformationAndSequence(filePath)
-        val normalizeSequence = FileNormalize.remove(sequence)
-
-        val geSeqMap: Map[String, Any] = GeSeq.convertGeSeqToNeo4jFormat(GeSeq.fromSequence(normalizeSequence))
-
-        val cypherQuery =
-          s"""
-             CREATE (n:GeSeq {header: '$information', geseq: $geSeqMap});
-           """
-
-        session.run(cypherQuery)
-
-      }
-
-      cypherQuery =
-        """
-          |match (n)
-          |return n;
-          |""".stripMargin
-
-      val result = session.run(cypherQuery)
-
-      while (result.hasNext) {
-        val record = result.next()
-        val node = record.get("n").asNode()
-        println(s"Node: ${node.asMap()}")
-      }
-    } finally {
-      session.close()
-      driver.close()
-    }
-  }
-
-
-  //  @Test
-  //  def geSeq(): Unit = {
-  //    val geSeq = GeSeq(
-  //      bbm = Array[Byte](1, 2, 3),
-  //      lowercase = List((1, 2)),
-  //      nBase = List((3, 4)),
-  //      otherBASE = List((5, "A")),
-  //      sequenceLength = 100L,
-  //      nucleotidesLength = 50L
-  //    )
-  //
-  //    val jsonResult: Try[String] = Try {
-  //      val json = Json.toJson(geSeq)
-  //      println(s"JSON Result: $json") // 打印 JSON 对象以帮助调试
-  //      json.toString()
-  //    }
-  //
-  //    jsonResult match {
-  //      case Success(jsonString) =>
-  //        val cypherQuery =
-  //          s"""
-  //           CREATE (n:GeSeq {data: '$jsonString'})
-  //         """
-  //        println(cypherQuery)
-  //      case Failure(exception) =>
-  //        println(s"Error converting to JSON: ${exception.getMessage}")
-  //        exception.printStackTrace() // 打印堆栈信息以帮助调试
-  //    }
-  //  }
 
   def listAllFiles(dir: File): List[File] = {
     val files = dir.listFiles
