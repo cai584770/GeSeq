@@ -1,17 +1,17 @@
 package neo4j
 
-import org.cai.bbm.BBM
+import neo4j.config.{DataSet, Neo4jConnect, TestTools}
 import org.cai.file.{FileNormalize, FileProcess}
-import org.cai.geseq.BioSequenceEnum.DNA
-import org.cai.geseq.{BioSequenceEnum, GeSeq}
+import org.cai.geseq.GeSeq
 import org.junit.jupiter.api.Test
 import org.neo4j.driver._
+
+import java.util.HashMap
+import org.neo4j.driver.Values
 
 import java.io.File
 import java.util
 import scala.collection.immutable
-import scala.collection.JavaConverters._
-import java.util.{HashMap, Map => JMap}
 /**
  * @author cai584770
  * @date 2024/8/15 15:44
@@ -19,13 +19,9 @@ import java.util.{HashMap, Map => JMap}
  */
 class Neo4jTest {
 
-  val uri = "bolt://localhost:7687"
-  val username = "neo4j"
-  val password = "neo4j"
-
   @Test
   def clearNeo(): Unit = {
-    val driver: Driver = GraphDatabase.driver(uri, AuthTokens.none())
+    val driver: Driver = GraphDatabase.driver(Neo4jConnect.uri, AuthTokens.none())
     val session: Session = driver.session(SessionConfig.forDatabase("neo4j"))
 
     try {
@@ -44,7 +40,7 @@ class Neo4jTest {
 
   @Test
   def matchNeo4j(): Unit = {
-    val driver: Driver = GraphDatabase.driver(uri, AuthTokens.none())
+    val driver: Driver = GraphDatabase.driver(Neo4jConnect.uri, AuthTokens.none())
     val session: Session = driver.session(SessionConfig.forDatabase("neo4j"))
 
     try {
@@ -69,13 +65,13 @@ class Neo4jTest {
 
   @Test
   def geSeqInNeo4j(): Unit = {
-    val driver: Driver = GraphDatabase.driver(uri, AuthTokens.none())
+    val driver: Driver = GraphDatabase.driver(Neo4jConnect.uri, AuthTokens.none())
 
     val session: Session = driver.session(SessionConfig.forDatabase("neo4j"))
 
     try {
       val files = new File(DataSet.geSeqFolder)
-      val allFiles: immutable.Seq[File] = listAllFiles(files)
+      val allFiles: immutable.Seq[File] = TestTools.listAllFiles(files)
       var cypherQuery = ""
       for (elem <- allFiles) {
         val filePath = elem.toString
@@ -86,14 +82,19 @@ class Neo4jTest {
 
         val parameters: util.HashMap[String, Object] = new util.HashMap[String,Object]()
 
-        mapN.foreach { case (key, value) => parameters.put(key, value.asInstanceOf[Object])
+        mapN.foreach { case (key, value) =>
+          println(f"$key --- ${value.asInstanceOf[Object]}")
+          parameters.put(key, value.asInstanceOf[Object])
         }
 
 
         val cypherQuery =
           s"""
-             CREATE (n:GeSeq {header: '$information', geseq: $parameters});
+             CREATE (n:GeSeq {header: '$information', geseq: '$parameters'});
            """
+
+//        val query = "CREATE (n:Gene {sequence: $sequence, nBase: $nBase, lowercase: $lowercase, })"
+//        session.run(query, parameters)
         session.run(cypherQuery)
       }
 
@@ -117,11 +118,4 @@ class Neo4jTest {
   }
 
 
-
-  def listAllFiles(dir: File): List[File] = {
-    val files = dir.listFiles
-    val folders = files.filter(_.isDirectory).toList
-    val folderFiles = folders.flatMap(listAllFiles)
-    files.filter(_.isFile).toList ++ folderFiles
-  }
 }

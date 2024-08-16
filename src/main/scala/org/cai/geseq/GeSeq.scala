@@ -2,8 +2,6 @@ package org.cai.geseq
 
 import org.cai.bbm.BBM
 import org.cai.geseq.BioSequenceEnum.{BioSequenceType, DNA}
-import org.neo4j.driver.{Driver, GraphDatabase, Session}
-import play.api.libs.json._
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
@@ -83,30 +81,6 @@ case class GeSeq(
 
 
 object GeSeq {
-
-  implicit val byteArrayWrites: Writes[Array[Byte]] = Writes { array =>
-    JsArray(array.map(b => JsNumber(b.toInt)))
-  }
-
-  implicit val byteArrayReads: Reads[Array[Byte]] = Reads {
-    case JsArray(values) =>
-      val byteResults: Seq[JsResult[Byte]] = values.map {
-        case JsNumber(n) =>
-          if (n.isValidByte) JsSuccess(n.toByte)
-          else JsError("Invalid byte value")
-        case _ => JsError("Expected a number value")
-      }
-
-      byteResults.foldLeft(JsSuccess(Seq.empty[Byte]): JsResult[Seq[Byte]]) {
-        case (JsSuccess(acc, _), JsSuccess(value, _)) => JsSuccess(acc :+ value)
-        case (JsError(errors1), JsError(errors2)) => JsError(errors1 ++ errors2)
-        case (error@JsError(_), _) => error
-        case (_, error@JsError(_)) => error
-      }.map(_.toArray)
-    case _ => JsError("Expected an array of bytes")
-  }
-
-  implicit val geSeqFormat: Format[GeSeq] = Json.format[GeSeq]
 
   def fromSequence(data: String, bioSequenceType: BioSequenceType = DNA): GeSeq = {
     val (noLowerCaseSequence, lowerCaseList) = BBM.findConsecutiveLowerCasePositions(data)

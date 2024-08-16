@@ -21,18 +21,8 @@
     </build>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/com.typesafe.play/play-json -->
-        <dependency>
-            <groupId>com.typesafe.play</groupId>
-            <artifactId>play-json_2.12</artifactId>
-            <version>2.7.2</version>
-        </dependency>
 
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.30</version>
-        </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/org.neo4j.driver/neo4j-java-driver -->
         <dependency>
@@ -48,12 +38,13 @@
             <version>4.4.11</version>
         </dependency>
 
-
         <dependency>
-            <groupId>org.grapheco</groupId>
-            <artifactId>pandadb-plugin</artifactId>
-            <version>0.5.0-alpha</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.10.0</version>
+            <scope>test</scope>
         </dependency>
+
 
         <dependency>
             <groupId>junit</groupId>
@@ -63,81 +54,12 @@
         </dependency>
 
         <dependency>
-            <groupId>org.biojava</groupId>
-            <artifactId>biojava-core</artifactId>
-            <version>6.1.0</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.biojava/biojava-alignment -->
-        <dependency>
-            <groupId>org.biojava</groupId>
-            <artifactId>biojava-alignment</artifactId>
-            <version>6.1.0</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.biojava/biojava-phylo -->
-        <dependency>
-            <groupId>org.biojava</groupId>
-            <artifactId>biojava-phylo</artifactId>
-            <version>4.2.12</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.biojava.thirdparty</groupId>
-                    <artifactId>forester</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.biojava.thirdparty/forester -->
-        <!--        <dependency>-->
-        <!--            <groupId>org.biojava.thirdparty</groupId>-->
-        <!--            <artifactId>forester</artifactId>-->
-        <!--            <version>1.039</version>-->
-        <!--        </dependency>-->
-        <!-- https://mvnrepository.com/artifact/org.biojava/biojava-genome -->
-        <dependency>
-            <groupId>org.biojava</groupId>
-            <artifactId>biojava-genome</artifactId>
-            <version>6.1.0</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.biojava/sequencing -->
-        <dependency>
-            <groupId>org.biojava</groupId>
-            <artifactId>sequencing</artifactId>
-            <version>1.9.7</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.github.samtools/htsjdk -->
-        <dependency>
-            <groupId>com.github.samtools</groupId>
-            <artifactId>htsjdk</artifactId>
-            <version>3.0.5</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.grapheco</groupId>
-            <artifactId>lynx</artifactId>
-            <version>0.6.6</version>
-        </dependency>
-        <dependency>
-            <groupId>org.grapheco</groupId>
-            <artifactId>pandadb-plugin</artifactId>
-            <version>0.5.0-alpha</version>
-        </dependency>
-        <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>scala-library</artifactId>
-            <version>2.12.8</version>
-        </dependency>
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.20</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.20</version>
-            <scope>compile</scope>
-        </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
