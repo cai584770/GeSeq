@@ -1,7 +1,6 @@
 package neo4j
 
 import neo4j.config.Neo4jConnect
-import org.cai.geseq.GeSeq
 import org.cai.tools.translate.TranslateTools
 import org.junit.jupiter.api.Test
 import org.neo4j.driver._

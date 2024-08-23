@@ -59,8 +59,6 @@ object FileProcess {
       information
   }
 
-
-
   def processFile(filePath: String, folderPath: String): Unit = {
     createFolder(folderPath)
     val delimiter = '>'
@@ -166,7 +164,6 @@ object FileProcess {
     datasources.close()
     datas
   }
-
 
 
 

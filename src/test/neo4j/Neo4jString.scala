@@ -27,32 +27,16 @@ class Neo4jString {
       var cypherQuery = ""
       for (elem <- allFiles) {
         val filePath = elem.toString
+
         val (information, sequence) = FileProcess.getInformationAndSequence(filePath)
         val normalizeSequence = FileNormalize.remove(sequence)
 
-        val cypherQuery =
-          """
-            |CREATE (n:GeSeq
-            |{storage:'str',
-            |header: '$information',
-            |geseq: $normalizeSequence});
-            |""".stripMargin
+        cypherQuery =
+          s"""
+           CREATE (n:GeSeq{storage:'str',header: '$information',geseq: '$normalizeSequence'});
+           """
 
         session.run(cypherQuery)
-      }
-
-      cypherQuery =
-        """
-          |match (n)
-          |return n;
-          |""".stripMargin
-
-      val result = session.run(cypherQuery)
-
-      while (result.hasNext) {
-        val record = result.next()
-        val node = record.get("n").asNode()
-        println(s"Node: ${node.asMap()}")
       }
     } finally {
       session.close()

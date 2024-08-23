@@ -9,7 +9,7 @@ import scala.collection.mutable
  */
 object TranslateTools {
 
-  def translate(ba:Array[Byte]):String={
+  def translate(ba: Array[Byte]): String = {
     var cur = 0
     var temp1: Byte = 0
     var temp2: Byte = 0
@@ -45,8 +45,6 @@ object TranslateTools {
 
     protein.toString()
   }
-
-
 
 
 }

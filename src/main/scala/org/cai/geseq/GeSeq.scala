@@ -150,4 +150,5 @@ object GeSeq {
 
     GeSeq(bbm, lowercase, nBase, otherBASE, sequenceLength, nucleotidesLength)
   }
+
 }

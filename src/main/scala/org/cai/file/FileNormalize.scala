@@ -1,6 +1,7 @@
 package org.cai.file
 
 
+
 object FileNormalize {
 
   def normalize(data: String): String = {

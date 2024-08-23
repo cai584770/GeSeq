@@ -9,10 +9,10 @@ import scala.collection.mutable
  */
 object Decoding {
 
-  def convertFromBinaryArray(bytes: Array[Byte]): StringBuilder = {
+  def convertFromBinaryArray(bytes: Array[Byte]): mutable.StringBuilder = {
     val conversionMap = Map(Encoding.a -> 'A', Encoding.c -> 'C', Encoding.g -> 'G', Encoding.t -> 'T')
 
-    val resultStringBuilder = new StringBuilder(bytes.length * 4)
+    val resultStringBuilder = new mutable.StringBuilder(bytes.length * 4)
     bytes.foreach { byte =>
       resultStringBuilder.append(conversionMap.getOrElse(((byte >> 6) & 0x03).toByte,"_")).append(conversionMap.getOrElse(((byte >> 4) & 0x03).toByte,"_")).append(conversionMap.getOrElse(((byte >> 2) & 0x03).toByte,"_")).append(conversionMap.getOrElse((byte & 0x03).toByte,"_"))
     }

@@ -31,6 +31,11 @@ object Complement {
       .replace('Y', 'C')
   }
 
-
+  def reverseLong(value: Long): Long = {
+    ~value
+  }
+  def reverseLongArray(arr: Array[Long]): Array[Long] = {
+    arr.map(~_)
+  }
 
 }
