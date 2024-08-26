@@ -6,8 +6,19 @@ import scala.io.Source
 
 object FileProcess {
 
-  def getFASTQ(filePath: String): Unit ={
+  def getSequenceFromFASTQ(filePath: String): String = {
+    val lines = Source.fromFile(filePath).getLines()
+    val sequenceLines = collection.mutable.ArrayBuffer[String]()
 
+    while (lines.hasNext) {
+      lines.next()
+      val sequenceLine = lines.next()
+      sequenceLines += sequenceLine
+      lines.next()
+      lines.next()
+    }
+
+    sequenceLines.mkString("")
   }
 
   def getInformationAndSequence(filePath: String): (String,String) = {

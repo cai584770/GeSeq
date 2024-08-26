@@ -10,19 +10,19 @@ import org.neo4j.procedure.{Name, UserFunction}
  */
 class StringFunctions {
 
-  @UserFunction(name = "stringReverse")
+  @UserFunction("str.rev")
   @Description("reverse gene sequence string")
   def reverseString(@Name("input") input: String): String = {
     input.reverse
   }
 
-  @UserFunction(name = "stringComplement")
+  @UserFunction("str.com")
   @Description("complement gene sequence string")
   def complementString(@Name("input") input: String): String = {
     complementString(input)
   }
 
-  @UserFunction(name = "stringrev_com")
+  @UserFunction("str.rev_com")
   @Description("reverse and complement gene sequence string")
   def reverseComplementString(@Name("input") input: String): String = {
     complementString(input).reverse

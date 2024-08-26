@@ -1,5 +1,6 @@
 package org.cai.udf
 
+import org.cai.file.{FileNormalize, FileProcess}
 import org.cai.geseq.GeSeq
 import org.cai.tools.convert.{Complement, Reverse}
 import org.cai.tools.translate.{Decoding, TranslateTools}
@@ -12,27 +13,30 @@ import org.neo4j.procedure.{Description, Name, UserFunction}
  */
 class GeSeqFunctions {
 
-//  @UserFunction
-//  @Description("Process custom data type")
-//  def fromFASTQ(@Name("input") input: String): Map[String, Any] = {
-//    val (information, sequence) = FileProcess.getInformationAndSequence(input)
-//    val normalizeSequence = FileNormalize.remove(sequence)
-//
-//    val map = GeSeq.fromSequence(normalizeSequence).toMap
-//    map
-//  }
+  @UserFunction("geseq.fromFASTQ")
+  @Description("get GeSeq from fastq file")
+  def fromFASTQ(@Name("input") input: String): Array[Byte] = {
+    val sequence: String = FileProcess.getSequenceFromFASTQ(input)
 
-//  @UserFunction
-//  @Description("Process custom data type")
-//  def fromFASTA(@Name("input") input: String): Map[String, Any] = {
-//    val (information, sequence) = FileProcess.getInformationAndSequence(input)
-//    val normalizeSequence = FileNormalize.remove(sequence)
-//
-//    GeSeq.fromSequence(normalizeSequence).toMap
-//  }
+    val normalizeSequence = FileNormalize.remove(sequence)
+    val seq: GeSeq = GeSeq.fromSequence(normalizeSequence)
+
+    seq.toByteArray
+  }
 
 
-  @UserFunction(name = "translate")
+  @UserFunction("geseq.fromFASTA")
+  @Description("get GeSeq from fasta file")
+  def fromFASTA(@Name("input") input: String): Array[Byte] = {
+    val (information, sequence) = FileProcess.getInformationAndSequence(input)
+    val normalizeSequence = FileNormalize.remove(sequence)
+    val seq: GeSeq = GeSeq.fromSequence(normalizeSequence)
+
+    seq.toByteArray
+  }
+
+
+  @UserFunction("geseq.translate")
   @Description("translate gene sequence to protein sequence")
   def translateGene(@Name("input") input: Array[Byte]): String = {
     val bytes = GeSeq.extractBbm(input)
@@ -40,7 +44,7 @@ class GeSeqFunctions {
     result
   }
 
-  @UserFunction(name = "reverseGene")
+  @UserFunction("geseq.rev")
   @Description("reverse gene sequence")
   def reverseGene(@Name("input") input: Array[Byte]): String = {
     val bytes = GeSeq.extractBbm(input)
@@ -48,16 +52,16 @@ class GeSeqFunctions {
 
   }
 
-  @UserFunction(name = "complement")
+  @UserFunction("geseq.com")
   @Description("complement gene sequence")
   def complementGene(@Name("input") input: Array[Byte]): String = {
     val bytes = GeSeq.extractBbm(input)
     Decoding.convertFromBinaryArray(Complement.complement(bytes)).toString()
   }
 
-  @UserFunction(name = "rev_com")
+  @UserFunction("geseq.rev_com")
   @Description("reverse and complement gene sequence")
-  def reverseComplementGene(@Name("input") input:  Array[Byte]): String = {
+  def reverseComplementGene(@Name("input") input: Array[Byte]): String = {
     val bytes = GeSeq.extractBbm(input)
     Decoding.convertFromBinaryArray(Complement.complement(Reverse.reverseDirect(bytes))).toString()
   }

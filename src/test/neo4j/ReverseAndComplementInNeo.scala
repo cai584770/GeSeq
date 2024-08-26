@@ -71,13 +71,14 @@ class ReverseAndComplementInNeo {
 
     try {
       //      for (i <- 49 until 56) {  // 1w,10w,100w,1000w,10,100,1000
-      val i = 1
+      val i = 19
       val startTime = System.currentTimeMillis()
       val cypherQuery =
         """
           |match (n) where id(n) = $nodeId
           |with n.geseq as seq
-          |with replace(seq, 'A', 't') as at_seq
+          |with reverse(seq) as re_seq
+          |with replace(re_seq, 'A', 't') as at_seq
           |with replace(at_seq, 'T', 'a') as ta_seq
           |with replace(ta_seq, 'C', 'g') as cg_seq
           |with replace(cg_seq, 'G', 'c') as gc_seq

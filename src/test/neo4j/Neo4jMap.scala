@@ -13,6 +13,8 @@ import scala.collection.JavaConverters._
  * @date 2024/8/23 10:52
  * @Version
  */
+
+@Deprecated
 class Neo4jMap {
 
   @Test
