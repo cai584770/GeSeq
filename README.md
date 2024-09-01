@@ -18,8 +18,8 @@ The `org.cai.file` package contains parsing functionality for imported files, wi
 
 The `org.cai.file` package includes the definition of GeSeq and common usage methods.
 
-```
-scala复制代码case class GeSeq(
+```scala
+case class GeSeq(
                   sequence: Array[Byte],
                   lowercase: List[(Int, Int)],
                   nBase: List[(Int, Int)],
