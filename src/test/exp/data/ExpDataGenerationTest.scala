@@ -45,9 +45,9 @@ class ExpDataGenerationTest {
     val (agctSequence, otherCaseList) = removeAndRecord(noNSequence)
 
     println(agctSequence.length)
-    val times = 1000
-    for (i <- 1 to times) {
-      writeToFile1(s"/data/cjw/geseq/1tb/${i}.fa", agctSequence, 10)
+    val times = 10000
+    for (i <- 1001 to times) {
+      writeToFile1(s"/data/cjw/geseq/10gb_geseq/${i}.fa", agctSequence, 1)
     }
   }
 

@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test
  * @Version
  */
 class Exp2GeSeq {
-  private val filePath = Exp2Base.Path_10000000000
+  private val filePath = "/home/cjw/program/geseq/data/100000000.fa"
 
   @Test
   def reverse(): Unit = {
@@ -28,7 +28,7 @@ class Exp2GeSeq {
     val t1 = System.currentTimeMillis()
     val result: Array[Byte] = Reverse.reverseDirect(ba)
     println(s"reverse runtime:${System.currentTimeMillis() - t1}")
-    println(areByteArraysEqual(Reverse.reverseDirect(result),ba))
+    println(areByteArraysEqual(Reverse.reverseDirect(result), ba))
 
   }
 
@@ -45,7 +45,7 @@ class Exp2GeSeq {
     val t1 = System.currentTimeMillis()
     val result = Complement.complement(ba)
     println(s"complement:${System.currentTimeMillis() - t1}")
-    println(areByteArraysEqual(Complement.complement(result),ba))
+    println(areByteArraysEqual(Complement.complement(result), ba))
 
   }
 
@@ -62,7 +62,7 @@ class Exp2GeSeq {
     val t1 = System.currentTimeMillis()
     val result = Complement.complement(Reverse.reverseDirect(ba))
     println(s"reverse and complement runtime:${System.currentTimeMillis() - t1}")
-    println(areByteArraysEqual(Complement.complement(Reverse.reverseDirect(result)),ba))
+    println(areByteArraysEqual(Complement.complement(Reverse.reverseDirect(result)), ba))
 
 
   }
@@ -80,6 +80,7 @@ class Exp2GeSeq {
     val t1 = System.currentTimeMillis()
     val protein = TranslateTools.translate(ba)
     println(s"translate runtime:${System.currentTimeMillis() - t1}")
+
 
 
   }

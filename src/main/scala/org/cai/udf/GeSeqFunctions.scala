@@ -40,8 +40,8 @@ class GeSeqFunctions {
   @Description("translate gene sequence to protein sequence")
   def translateGene(@Name("input") input: Array[Byte]): String = {
     val bytes = GeSeq.extractBbm(input)
-    val result: String = TranslateTools.translate(bytes)
-    result
+    val result = TranslateTools.translate(bytes)
+    result.toString()
   }
 
   @UserFunction("geseq.rev")

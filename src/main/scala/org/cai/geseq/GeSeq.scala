@@ -82,7 +82,7 @@ case class GeSeq(
 
 object GeSeq {
 
-  def fromSequence(data: String, bioSequenceType: BioSequenceType = DNA): GeSeq = {
+  def fromSequence(data: String): GeSeq = {
     val (noLowerCaseSequence, lowerCaseList) = BBM.findConsecutiveLowerCasePositions(data)
     val (noNSequence, nCaseList) = BBM.removeAndRecordN(noLowerCaseSequence)
     val (agctSequence, otherCaseList) = BBM.removeAndRecord(noNSequence)

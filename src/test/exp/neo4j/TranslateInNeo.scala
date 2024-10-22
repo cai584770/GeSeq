@@ -39,7 +39,7 @@ class TranslateInNeo {
         val record = result.next()
         val base64String = record.get("geseqData").asString()
         val byteArray = Base64.getDecoder.decode(base64String)
-        val r: String = TranslateTools.translate(byteArray)
+        val r = TranslateTools.translate(byteArray)
 
         val endTime = System.currentTimeMillis()
         println(endTime - startTime)
