@@ -60,5 +60,10 @@ object Reverse {
     result.reverse
   }
 
+  def reverseString(data:String):String={
+    data.reverse
+  }
+
+
 
 }

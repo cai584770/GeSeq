@@ -21,21 +21,21 @@ object Complement {
     result
   }
 
-  def complementString(sequence: String): String = {
-    sequence
-      .replace('A', 'X')
-      .replace('T', 'A')
-      .replace('X', 'T')
-      .replace('G', 'Y')
-      .replace('C', 'G')
-      .replace('Y', 'C')
-  }
-
   def reverseLong(value: Long): Long = {
     ~value
   }
   def reverseLongArray(arr: Array[Long]): Array[Long] = {
     arr.map(~_)
+  }
+
+  def complementString(data: String): String = {
+    data.map {
+      case 'A' => 'T'
+      case 'T' => 'A'
+      case 'G' => 'C'
+      case 'C' => 'G'
+      case other => other
+    }
   }
 
 }

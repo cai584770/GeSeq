@@ -1,6 +1,6 @@
 package exp.exp1.bz2;
 
-import exp.mysql.connect.TestBase;
+import exp.mysql.base.TestBase;
 import org.cai.file.compress.Bzip2;
 import org.cai.file.processor.FilePath;
 import org.junit.jupiter.api.Test;

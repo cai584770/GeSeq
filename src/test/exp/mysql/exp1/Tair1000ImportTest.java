@@ -1,6 +1,6 @@
 package exp.mysql.exp1;
 
-import exp.mysql.connect.TestBase;
+import exp.mysql.base.TestBase;
 import org.cai.db.mysql.DML.Insert;
 import org.cai.file.processor.FilePath;
 import org.cai.file.processor.FileProcessor;
