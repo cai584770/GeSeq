@@ -11,7 +11,6 @@ import java.sql.SQLException;
  * @Version
  */
 public class Insert {
-
     public static void insertData(Connection conn, String sql, String information, Object sequence) {
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, information);
@@ -23,11 +22,10 @@ public class Insert {
                 throw new IllegalArgumentException("Unsupported sequence type.");
             }
             int rowsAffected = pstmt.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("Insert success!");
-            } else {
+            if (rowsAffected <= 0) {
                 System.out.println("Insert error!");
             }
+
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }

@@ -2,6 +2,8 @@ package org.cai.geseq
 
 import org.cai.bbm.BBM
 import org.cai.geseq.BioSequenceEnum.{BioSequenceType, DNA}
+import org.cai.serialize.DeSerializeBase
+import org.postgresql.util.PGobject
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
@@ -149,6 +151,26 @@ object GeSeq {
     val nucleotidesLength = buffer.getLong
 
     GeSeq(bbm, lowercase, nBase, otherBASE, sequenceLength, nucleotidesLength)
+  }
+
+  def fromPostgreSQLResult(anyRef: AnyRef):GeSeq={
+    val pgObj: PGobject = anyRef.asInstanceOf[PGobject]
+
+    val value = pgObj.getValue
+    val myGeseq = value.stripPrefix("(").stripSuffix(")").split(",").map(_.trim)
+
+    val sequence = myGeseq(0).asInstanceOf[Array[Byte]]
+    val lowercaseBytes = myGeseq(1).asInstanceOf[Array[Byte]]
+    val nBaseBytes = myGeseq(2).asInstanceOf[Array[Byte]]
+    val otherBASEBytes = myGeseq(3).asInstanceOf[Array[Byte]]
+    val sequenceLength = myGeseq(4).asInstanceOf[Long]
+    val nucleotidesLength = myGeseq(5).asInstanceOf[Long]
+
+    val lowercase = DeSerializeBase.deserializeListOfPairs(lowercaseBytes)
+    val nBase = DeSerializeBase.deserializeListOfPairs(nBaseBytes)
+    val otherBASE = DeSerializeBase.deserializeListOfPairWithString(otherBASEBytes)
+
+    GeSeq(sequence, lowercase, nBase, otherBASE, sequenceLength, nucleotidesLength)
   }
 
 }

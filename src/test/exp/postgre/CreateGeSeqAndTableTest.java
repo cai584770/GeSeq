@@ -14,7 +14,7 @@ public class CreateGeSeqAndTableTest {
     @Test
     public void createGeSeqType() {
         try (Connection connection = DriverManager.getConnection(PostgreSQLBase.url, PostgreSQLBase.user, PostgreSQLBase.password)) {
-            String sql = "CREATE TYPE geseq AS (sequence bytea, lowercase bytea, nbase bytea, otherbase bytea, sequencelength bigint, nucleotideslength bigint);";
+            String sql = "CREATE TYPE GeSeq AS (sequence bytea, lowercase bytea, nbase bytea, otherbase bytea, sequencelength bigint, nucleotideslength bigint);";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.execute();
             } catch (SQLException e) {
@@ -26,7 +26,7 @@ public class CreateGeSeqAndTableTest {
     }
 
     @Test
-    public void createTable() {
+    public void createGeSeqTable() {
         try (Connection connection = DriverManager.getConnection(PostgreSQLBase.url, PostgreSQLBase.user, PostgreSQLBase.password)) {
             String sql = "CREATE TABLE gene (id serial PRIMARY KEY, information text, my_geseq geseq);";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -38,4 +38,19 @@ public class CreateGeSeqAndTableTest {
             throw new RuntimeException(e);
         }
     }
+
+    @Test
+    public void createStringTable() {
+        try (Connection connection = DriverManager.getConnection(PostgreSQLBase.url, PostgreSQLBase.user, PostgreSQLBase.password)) {
+            String sql = "CREATE TABLE gene_str (id serial PRIMARY KEY, information text, sequence text);";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.execute();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
