@@ -8,8 +8,8 @@ import scala.collection.Seq
  * @Version
  */
 object Encoding {
-  val a: Byte = 0
   val t: Byte = 3
+  val a: Byte = 0
   val c: Byte = 1
   val g: Byte = 2
   val r002 = Seq(t, 'u', c, 'y')
@@ -29,47 +29,6 @@ object Encoding {
     val paddedBinaryString = binaryString + "0" * paddingLength
     paddedBinaryString.grouped(8).map(Integer.parseInt(_, 2).toByte).toArray
   }
-
-
-//  def encodingProtein(d1: Any, d2: Any, d3: Any): Char = {
-//    (d1, d2, d3) match {
-//      case (`a`, `a`, d) if r002.contains(d) => 'N'
-//      case (`a`, `a`, d) if r021.contains(d) => 'K'
-//      case (`a`, `c`, d) if r005.contains(d) => 'T'
-//      case (`a`, `g`, d) if r021.contains(d) => 'R'
-//      case (`a`, `g`, d) if r003.contains(d) => 'S'
-//      case (`a`, d2, d) if r11.contains(d2) && r006.contains(d) => 'I'
-//      case (`a`, d2, `g`) if r11.contains(d2) => 'M'
-//
-//      case (`c`, `a`, d) if r004.contains(d) => 'H'
-//      case (`c`, `a`, d) if r021.contains(d) => 'Q'
-//      case (`c`, `c`, d) if r005.contains(d) => 'P'
-//      case (`c`, `g`, d) if r005.contains(d) => 'R'
-//      case (`c`, d2, d) if r11.contains(d2) && r005.contains(d) => 'L'
-//
-//      case (`g`, `a`, d) if r004.contains(d) => 'D'
-//      case (`g`, `a`, d) if r021.contains(d) => 'E'
-//      case (`g`, `c`, d) if r005.contains(d) => 'A'
-//      case (`g`, `g`, d) if r005.contains(d) => 'G'
-//      case (`g`, d2, d) if r11.contains(d2) && r005.contains(d) => 'V'
-//
-//      case (d1, `a`, d) if r11.contains(d1) && r207.contains(d) => 'Y'
-//      case (d1, `a`, d) if r11.contains(d1) && r021.contains(d) => '*'
-//      case (d1, `c`, d) if r11.contains(d1) && r005.contains(d) => 'S'
-//      case (d1, `g`, `a`) if r11.contains(d1) => '*'
-//      case (d1, `g`, `g`) if r11.contains(d1) => 'W'
-//      case (d1, `g`, d) if r11.contains(d1) && r207.contains(d) => 'C'
-//      case (d1, d2, d) if r11.contains(d1) && r11.contains(d2) && r004.contains(d) => 'F'
-//      case (d1, d2, d) if r11.contains(d1) && r11.contains(d2) && r021.contains(d) => 'L'
-//      case (d1, d2, `a`) if r11.contains(d1) && r021.contains(d2) => '*'
-//
-//      case (d1, `g`, d) if r1.contains(d1) && r021.contains(d) => 'R'
-//      case (d1, d2, d) if r207.contains(d1) && r11.contains(d2) && r021.contains(d) => 'L'
-//
-//      case _ => ' '
-//    }
-//  }
-
 
   val codonTable: Map[(Byte, Byte, Byte), String] = Map(
     // UUU -> F, UUC -> F
@@ -166,7 +125,7 @@ object Encoding {
     codonTable.getOrElse((d1, d2, d3), "")
   }
 
-  def encodingProtein1(d1: Any, d2: Any, d3: Any): String = {
+  def encodingProteinFirst(d1: Any, d2: Any, d3: Any): String = {
     (d1, d2, d3) match {
       case (`a`, `a`, d) if r002.contains(d) => "N"
       case (`a`, `a`, d) if r021.contains(d) => "K"

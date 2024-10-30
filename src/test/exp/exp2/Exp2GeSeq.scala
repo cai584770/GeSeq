@@ -4,7 +4,7 @@ import org.cai.bbm.BBM
 import org.cai.bbm.BBM.{findConsecutiveLowerCasePositions, removeAndRecord, removeAndRecordN}
 import org.cai.file.{FileNormalize, FileProcess}
 import org.cai.tools.convert.{Complement, Reverse}
-import org.cai.tools.translate.TranslateTools
+import org.cai.tools.translate.{TranslateProtein, TranslateTools}
 import org.junit.jupiter.api.Test
 
 /**
@@ -81,10 +81,8 @@ class Exp2GeSeq {
     val protein = TranslateTools.translate(ba)
     println(s"translate runtime:${System.currentTimeMillis() - t1}")
 
-
-
+    
   }
-
 
   def areByteArraysEqual(arr1: Array[Byte], arr2: Array[Byte]): Boolean = {
     if (arr1.length != arr2.length) return false

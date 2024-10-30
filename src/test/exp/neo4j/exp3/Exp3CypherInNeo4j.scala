@@ -22,7 +22,7 @@ class Exp3CypherInNeo4j {
 //  Node ID: 12, Storage: str, Information: 100000
 //  Node ID: 13, Storage: str, Information: 10000000
 
-  private val id = 7
+  private val id = 13
 
   @Test
   def reverseCypher(): Unit = {
@@ -43,8 +43,8 @@ class Exp3CypherInNeo4j {
 
       val result = session.run(cypherQuery, parameters)
 
-      val endTime = System.currentTimeMillis() - startTime
-      println(endTime - startTime)
+      val totalTime = System.currentTimeMillis() - startTime
+      println(s"reverse time: $totalTime")
 
     } finally {
       session.close()
@@ -74,8 +74,8 @@ class Exp3CypherInNeo4j {
 
       val result = session.run(cypherQuery, parameters)
 
-      val endTime = System.currentTimeMillis() - startTime
-      println(endTime - startTime)
+      val totalTime = System.currentTimeMillis() - startTime
+      println(s"complement time: $totalTime")
 
     } finally {
       session.close()
@@ -105,8 +105,8 @@ class Exp3CypherInNeo4j {
       val parameters: java.util.Map[String, Object] = Map("nodeId" -> i.asInstanceOf[Object]).asJava
       val result = session.run(cypherQuery, parameters)
 
-      val endTime = System.currentTimeMillis() - startTime
-      println(endTime - startTime)
+      val totalTime = System.currentTimeMillis() - startTime
+      println(s"reverse and complement time: $totalTime")
     } finally {
       session.close()
       driver.close()
